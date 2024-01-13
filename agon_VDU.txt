@@ -1,4 +1,4 @@
-From BBC BASIC
+From BBC BASIC (from console8 Doc's 13/01/2024)
 The VDU command interprets each of the integer values following the keyword as an ASCII value. Values between 0 and 255 are accepted, and are separated by commas. If the value is immediately followed by a semicolon ; then the value is a little-endian word from 0 to 65535.
 
 Example:
