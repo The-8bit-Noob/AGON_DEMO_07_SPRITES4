@@ -1,0 +1,25 @@
+******************************
+*        AGON LIGHT 2        *
+*          DEMO 07           *
+*      BBC BASIC MODE 8      *
+*       SPRITES PART 4       *
+*      THANKS MILTON W       *
+*       BY LOVEJOY777        *
+******************************
+
+The -1 is because you loop from 0 (line 2540).
+If you want to loop through 3 elements (r,g,b) you could do 'FOR %I=1 TO 3'
+but then you would need to subtract 1 (times 3) from the memory lookup (e.g. ?(graphics+I%+0 - 3).
+
+
+The alpha is calculated as a bitwise OR.
+Lets say r% = 1, and g% = 2, then r% OR g% is 3.
+It's not the same as r% + g%!
+If r% is 255 then any OR will be 255. since all its bits are already '1'.
+Meaning any colour other than 000,000,000 (black=0) will be 255 (either on or off).
+
+
+The 'VDU r%, ...' (line 2590) is still in VDU 23,27,1,W%,H%,... (line 2530)
+It expects the WH4 bytes to follow.
+
+'VDU' is just a synonym for PRINT (or printf if you will). So VDU 23 just sends a 23 to the VDP, and VDU r% sends r% to the VDP.
