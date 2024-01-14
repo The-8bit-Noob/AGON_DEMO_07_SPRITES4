@@ -10,7 +10,7 @@
   100 REM http://agonconsole8.github.io/agon-docs/VDP.html.
   110 :
   120 MB%=&40000 : REM MEMORY BANK &40000.
-  130 DIM graphics 1024 : REM ARRAY 16x16*4(rgba).
+  130 DIM graphics 1024 : REM ARRAY FOR BITMAP DATA, 16*16*4(r,g,b,a) = 1024.
   140 X% = 152 : Y% = 112 : REM VARS FOR THE SPRITE POSITION (start at center of screen - 8 pixels).
   150 VDU 23,27,16 : REM CLEAR ALL GRAPHICS DATA (same as CLG).
   160 :
@@ -113,11 +113,12 @@
  2510 OSCLI("LOAD " + F$ + " " + STR$(MB%+graphics)) : REM OPERATING SYSTEM CLI COMMAND.
  2520 VDU 23,27,0,N% : REM SELECT BITMAP n (equating to buffer ID numbered 64000+n).
  2530 VDU 23,27,1,W%;H%; : REM LOAD COLOUR BITMAP DATA INTO CURRENT SPRITE.
- 2540 FOR I%=0 TO (W%*H%*3)-1 STEP 3 : REM LOOP 16x16x3 EACH PIXEL R,G,B - 1 FOR LINE END OR A.
- 2550   r% = ?(graphics+I%+0) : REM RED DATA.
- 2560   g% = ?(graphics+I%+1) : REM GREEN DATA.
- 2570   b% = ?(graphics+I%+2) : REM BLUE DATA.
- 2580   a% = r% OR g% OR b% : REM alpha ?.
- 2590   VDU r%, g%, b%, a% : REM unsure ?.
+ 2540 FOR I%=0 TO (W%*H%*3)-1 STEP 3 : REM LOOP 16x16x3 EACH PIXEL R,G,B, -1 (because we start the loop at 0).
+ 2550   r% = ?(graphics+I%+0) : REM GET RED DATA WITH QUERY & ASSIGN TO r%.
+ 2560   g% = ?(graphics+I%+1) : REM GET GREEN DATA WITH QUERY & ASSIGN TO g%.
+ 2570   b% = ?(graphics+I%+2) : REM GET BLUE DATA WITH QUERY & ASSIGN TO b%.
+ 2580   a% = r% OR g% OR b% : REM GET ALPHA DEPENDING ON (EITHER 255(colour/on) or 000(black/off)) & ASSIGN TO a%.
+ 2590   VDU r%, g%, b%, a% : REM PRINT red,green,blue,alpha VALUES TO THE VDP.
  2600 NEXT : REM LOOP NEXT PIXEL.
- 2610 ENDPROC : REM ***** END PROC_LOAD_BITMAP *****.
+ 2610 REM END VDU 23,27,1 (line 2530).
+ 2620 ENDPROC : REM END PROC_LOAD_BITMAP.
